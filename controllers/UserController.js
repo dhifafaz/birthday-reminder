@@ -128,6 +128,7 @@ export const updateScheduledStatus = async (userId) => {
 		}).then((response) => {
 			console.log("User Scheduled");
 		});
+		return true;
 	} catch (error) {
 		console.log(error.message);
 	}
@@ -139,7 +140,7 @@ export const findUsersWithBirthdaysToday = async () => {
 		const usersWithBirthdaysToday = users.filter((user) => {
 			const birthday = moment(user.birthday).format("MM-DD");
 			const today = moment().utc().format("MM-DD");
-			if (user.sendEmail === false) {
+			if (user.sendEmail === false && user.scheduled === false) {
 				return birthday === today;
 			}
 			return false;

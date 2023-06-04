@@ -6,11 +6,7 @@ dotenv.config();
 import Connect from "./config/Database.js";
 
 import UserRoute from "./routes/UserRoute.js";
-
-import {
-	scheduleBirthdayMessages,
-	sendBirthdayMessages,
-} from "./utils/SchedulerAndSender.js";
+import runScheduler from "./utils/Scheduler.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -28,14 +24,7 @@ const getServerTimeOnUTC0 = () => {
 
 console.log("Server Time On UTC 0: ", getServerTimeOnUTC0());
 
-// Start the birthday message scheduling process
-setInterval(scheduleBirthdayMessages, 1000 * 60 * 1);
-// Start the sender to send queued birthday messages every minute
-const startSender = () => {
-	setInterval(sendBirthdayMessages, 60 * 1000); // Repeat every 1 minute
-};
-// Start the sender
-startSender();
+runScheduler();
 
 app.listen(PORT, () => {
 	Connect();

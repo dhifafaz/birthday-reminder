@@ -1,0 +1,698 @@
+[nodemon] starting `node index.js`
+Server Time On UTC 0:  2023-06-04 17:30:16
+Running Scheduler......
+Server Started At Port 3001
+Redis Client Connected
+Database Connected
+Users with birthdays today: [
+  {
+    _id: new ObjectId("647cc87c23c85f3613eb9ac9"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new24',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:23:08.390Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cc87d23c85f3613eb9acb"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new24',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:23:09.369Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cc87e23c85f3613eb9acd"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new24',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:23:10.446Z,
+    __v: 0
+  }
+]
+Delay: -437182
+isi schedule null
+User Scheduled
+true
+(node:5528) DeprecationWarning: uuidv4() is deprecated. Use v4() from the uuid module instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Scheduled birthday message: {
+  id: '27988509-5951-4eec-8c3a-7a9c9d3cca67',
+  userId: new ObjectId("647cc87c23c85f3613eb9ac9"),
+  message: "Hey, new24 Athiyah, it's your birthday!",
+  timestamp: 1685899380000,
+  retryAttempts: 0
+}
+Delay: -437280
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: 'fc9983c9-be27-43d4-8034-e1327a6f7145',
+  userId: new ObjectId("647cc87d23c85f3613eb9acb"),
+  message: "Hey, new24 Athiyah, it's your birthday!",
+  timestamp: 1685899380000,
+  retryAttempts: 0
+}
+Delay: -437346
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '3d60589b-b47e-4aee-8bdc-1b9bbc6c34b5',
+  userId: new ObjectId("647cc87e23c85f3613eb9acd"),
+  message: "Hey, new24 Athiyah, it's your birthday!",
+  timestamp: 1685899380000,
+  retryAttempts: 0
+}
+Running The Schedule And Sending Birthday Messages......
+Tasks: []
+[nodemon] restarting due to changes...
+[nodemon] starting `node index.js`
+Server Time On UTC 0:  2023-06-04 17:30:20
+Running Scheduler......
+Server Started At Port 3001
+Redis Client Connected
+Database Connected
+Users with birthdays today: []
+Running The Schedule And Sending Birthday Messages......
+Tasks: []
+Running Scheduler......
+Users with birthdays today: [
+  {
+    _id: new ObjectId("647cc87c23c85f3613eb9ac9"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new24',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:23:08.390Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cc87d23c85f3613eb9acb"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new24',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:23:09.369Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cc87e23c85f3613eb9acd"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new24',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:23:10.446Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca635266ef1d4119026f"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new25',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:15.425Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca645266ef1d41190271"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new25',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:16.293Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca655266ef1d41190273"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new25',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:17.082Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca655266ef1d41190275"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new25',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:17.968Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca665266ef1d41190277"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new25',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:18.854Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca675266ef1d41190279"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new25',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:19.667Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca685266ef1d4119027b"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new25',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:20.611Z,
+    __v: 0
+  }
+]
+Delay: 158773
+isi schedule null
+User Scheduled
+true
+(node:14996) DeprecationWarning: uuidv4() is deprecated. Use v4() from the uuid module instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Scheduled birthday message: {
+  id: '786783da-c169-4c0f-97ec-b9bd84e0bb3d',
+  userId: new ObjectId("647cc87c23c85f3613eb9ac9"),
+  message: "Hey, new24 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 158723
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '31afa5e1-5c73-48cd-a97e-f313180f1983',
+  userId: new ObjectId("647cc87d23c85f3613eb9acb"),
+  message: "Hey, new24 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 158682
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: 'e27964c0-24c4-4d02-bfda-062ddfafe0da',
+  userId: new ObjectId("647cc87e23c85f3613eb9acd"),
+  message: "Hey, new24 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 158647
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '0b4894a9-7152-44e5-bf45-2caca8d3bc25',
+  userId: new ObjectId("647cca635266ef1d4119026f"),
+  message: "Hey, new25 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 158612
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '20c43e83-e835-41d2-8561-510ffd6d7505',
+  userId: new ObjectId("647cca645266ef1d41190271"),
+  message: "Hey, new25 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 158575
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: 'db5c294e-6e46-4ef6-a50e-13ab8af75c3b',
+  userId: new ObjectId("647cca655266ef1d41190273"),
+  message: "Hey, new25 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 158536
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: 'a96c538b-6562-44b5-89d6-f1aa00fbf6a7',
+  userId: new ObjectId("647cca655266ef1d41190275"),
+  message: "Hey, new25 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 158498
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '3a9d9cd3-f386-42a4-bb72-946070154cc4',
+  userId: new ObjectId("647cca665266ef1d41190277"),
+  message: "Hey, new25 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 158459
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: 'd61ad0bd-d83e-46ac-97dd-abaa72cbe892',
+  userId: new ObjectId("647cca675266ef1d41190279"),
+  message: "Hey, new25 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 158415
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: 'e6a49179-309f-4039-b53d-d1331f49dc66',
+  userId: new ObjectId("647cca685266ef1d4119027b"),
+  message: "Hey, new25 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Running The Schedule And Sending Birthday Messages......
+Tasks: [
+  `{"id":"e6a49179-309f-4039-b53d-d1331f49dc66","userId":"647cca685266ef1d4119027b","message":"Hey, new25 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`,  
+  `{"id":"d61ad0bd-d83e-46ac-97dd-abaa72cbe892","userId":"647cca675266ef1d41190279","message":"Hey, new25 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`,  
+  `{"id":"3a9d9cd3-f386-42a4-bb72-946070154cc4","userId":"647cca665266ef1d41190277","message":"Hey, new25 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`,  
+  `{"id":"a96c538b-6562-44b5-89d6-f1aa00fbf6a7","userId":"647cca655266ef1d41190275","message":"Hey, new25 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`,  
+  `{"id":"db5c294e-6e46-4ef6-a50e-13ab8af75c3b","userId":"647cca655266ef1d41190273","message":"Hey, new25 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`,  
+  `{"id":"20c43e83-e835-41d2-8561-510ffd6d7505","userId":"647cca645266ef1d41190271","message":"Hey, new25 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`,  
+  `{"id":"0b4894a9-7152-44e5-bf45-2caca8d3bc25","userId":"647cca635266ef1d4119026f","message":"Hey, new25 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`,  
+  `{"id":"e27964c0-24c4-4d02-bfda-062ddfafe0da","userId":"647cc87e23c85f3613eb9acd","message":"Hey, new24 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`,  
+  `{"id":"31afa5e1-5c73-48cd-a97e-f313180f1983","userId":"647cc87d23c85f3613eb9acb","message":"Hey, new24 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`,  
+  `{"id":"786783da-c169-4c0f-97ec-b9bd84e0bb3d","userId":"647cc87c23c85f3613eb9ac9","message":"Hey, new24 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`   
+]
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new25 Athiyah: Hey, new25 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new25 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new25 Athiyah: Hey, new25 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new25 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new25 Athiyah: Hey, new25 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new25 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new25 Athiyah: Hey, new25 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new25 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new25 Athiyah: Hey, new25 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new25 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new25 Athiyah: Hey, new25 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new25 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new25 Athiyah: Hey, new25 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new25 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new24 Athiyah: Hey, new24 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new24 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Error sending birthday message to new24 Athiyah: 502
+Error sending birthday message
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new24 Athiyah: Hey, new24 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new24 Athiyah, it's your birthday!
+Running Scheduler......
+Users with birthdays today: [
+  {
+    _id: new ObjectId("647cca875266ef1d4119029b"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new251',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:51.332Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca885266ef1d4119029d"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new252',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:52.788Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca8a5266ef1d4119029f"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new253',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:54.205Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca8b5266ef1d411902a1"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new254',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:55.809Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca8d5266ef1d411902a3"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new255',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:57.539Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca8f5266ef1d411902a5"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new256',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:31:59.473Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca915266ef1d411902a7"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new257',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:32:01.257Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca935266ef1d411902a9"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new258',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:32:03.165Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca955266ef1d411902ab"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new259',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:32:05.222Z,
+    __v: 0
+  },
+  {
+    _id: new ObjectId("647cca995266ef1d411902ad"),
+    email: 'dhifaf.az@gmail.com',
+    firstName: 'new260',
+    lastName: 'Athiyah',
+    birthday: 1950-06-04T00:00:00.000Z,
+    location: 'UTC',
+    sendEmail: false,
+    scheduled: false,
+    created_at: 2023-06-04T17:32:09.718Z,
+    __v: 0
+  }
+]
+Delay: 83057
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: 'a9637068-07b1-4896-be58-ab0dc6fdcdaf',
+  userId: new ObjectId("647cca875266ef1d4119029b"),
+  message: "Hey, new251 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 83011
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '7a07c416-83b5-4dbe-85ea-f163bf5769d4',
+  userId: new ObjectId("647cca885266ef1d4119029d"),
+  message: "Hey, new252 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 82975
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '9f4dde20-9d49-403a-821a-825e7513c999',
+  userId: new ObjectId("647cca8a5266ef1d4119029f"),
+  message: "Hey, new253 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 82904
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '7f176b86-2b35-4a14-a1a9-1142341eae92',
+  userId: new ObjectId("647cca8b5266ef1d411902a1"),
+  message: "Hey, new254 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 82866
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '5afe114e-13e1-4b7e-89e8-c066165868c6',
+  userId: new ObjectId("647cca8d5266ef1d411902a3"),
+  message: "Hey, new255 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 82828
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '90b91057-5a01-431c-a18a-74e306511178',
+  userId: new ObjectId("647cca8f5266ef1d411902a5"),
+  message: "Hey, new256 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 82793
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: 'a4723036-171a-468d-8d29-cc321928b96b',
+  userId: new ObjectId("647cca915266ef1d411902a7"),
+  message: "Hey, new257 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 82758
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '048f5ef0-3523-40ef-bc7d-0a1748f5326f',
+  userId: new ObjectId("647cca935266ef1d411902a9"),
+  message: "Hey, new258 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 82724
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: 'd21d01f1-7525-4a45-b26d-1a99133be4ec',
+  userId: new ObjectId("647cca955266ef1d411902ab"),
+  message: "Hey, new259 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Delay: 82680
+isi schedule null
+User Scheduled
+true
+Scheduled birthday message: {
+  id: '427d0942-a830-4128-a9a3-752da1ab7e42',
+  userId: new ObjectId("647cca995266ef1d411902ad"),
+  message: "Hey, new260 Athiyah, it's your birthday!",
+  timestamp: 1685900040000,
+  retryAttempts: 0
+}
+Running The Schedule And Sending Birthday Messages......
+Tasks: [
+  `{"id":"427d0942-a830-4128-a9a3-752da1ab7e42","userId":"647cca995266ef1d411902ad","message":"Hey, new260 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`, 
+  `{"id":"d21d01f1-7525-4a45-b26d-1a99133be4ec","userId":"647cca955266ef1d411902ab","message":"Hey, new259 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`, 
+  `{"id":"048f5ef0-3523-40ef-bc7d-0a1748f5326f","userId":"647cca935266ef1d411902a9","message":"Hey, new258 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`, 
+  `{"id":"a4723036-171a-468d-8d29-cc321928b96b","userId":"647cca915266ef1d411902a7","message":"Hey, new257 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`, 
+  `{"id":"90b91057-5a01-431c-a18a-74e306511178","userId":"647cca8f5266ef1d411902a5","message":"Hey, new256 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`, 
+  `{"id":"5afe114e-13e1-4b7e-89e8-c066165868c6","userId":"647cca8d5266ef1d411902a3","message":"Hey, new255 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`, 
+  `{"id":"7f176b86-2b35-4a14-a1a9-1142341eae92","userId":"647cca8b5266ef1d411902a1","message":"Hey, new254 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`, 
+  `{"id":"9f4dde20-9d49-403a-821a-825e7513c999","userId":"647cca8a5266ef1d4119029f","message":"Hey, new253 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`, 
+  `{"id":"7a07c416-83b5-4dbe-85ea-f163bf5769d4","userId":"647cca885266ef1d4119029d","message":"Hey, new252 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`, 
+  `{"id":"a9637068-07b1-4896-be58-ab0dc6fdcdaf","userId":"647cca875266ef1d4119029b","message":"Hey, new251 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":0}`, 
+  `{"id":"31afa5e1-5c73-48cd-a97e-f313180f1983","userId":"647cc87d23c85f3613eb9acb","message":"Hey, new24 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":1}`   
+]
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new260 Athiyah: Hey, new260 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new260 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new259 Athiyah: Hey, new259 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new259 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new258 Athiyah: Hey, new258 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new258 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new257 Athiyah: Hey, new257 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new257 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new256 Athiyah: Hey, new256 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new256 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Error sending birthday message to new255 Athiyah: 502
+Error sending birthday message
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Error sending birthday message to new254 Athiyah: 502
+Error sending birthday message
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Error sending birthday message to new253 Athiyah: 500
+Error sending birthday message
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Error sending birthday message to new252 Athiyah: 500
+Error sending birthday message
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Error sending birthday message to new251 Athiyah: 500
+Error sending birthday message
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new24 Athiyah: Hey, new24 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new24 Athiyah, it's your birthday!
+Running Scheduler......
+Users with birthdays today: []
+Running The Schedule And Sending Birthday Messages......
+Tasks: [
+  `{"id":"5afe114e-13e1-4b7e-89e8-c066165868c6","userId":"647cca8d5266ef1d411902a3","message":"Hey, new255 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":1}`, 
+  `{"id":"7a07c416-83b5-4dbe-85ea-f163bf5769d4","userId":"647cca885266ef1d4119029d","message":"Hey, new252 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":1}`, 
+  `{"id":"7f176b86-2b35-4a14-a1a9-1142341eae92","userId":"647cca8b5266ef1d411902a1","message":"Hey, new254 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":1}`, 
+  `{"id":"9f4dde20-9d49-403a-821a-825e7513c999","userId":"647cca8a5266ef1d4119029f","message":"Hey, new253 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":1}`, 
+  `{"id":"a9637068-07b1-4896-be58-ab0dc6fdcdaf","userId":"647cca875266ef1d4119029b","message":"Hey, new251 Athiyah, it's your birthday!","timestamp":1685900040000,"retryAttempts":1}`  
+]
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new255 Athiyah: Hey, new255 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new255 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new252 Athiyah: Hey, new252 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new252 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new254 Athiyah: Hey, new254 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new254 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new253 Athiyah: Hey, new253 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new253 Athiyah, it's your birthday!
+nineAMUserLocalTime Moment<2023-06-04T17:34:00Z>
+Sent birthday message to new251 Athiyah: Hey, new251 Athiyah, it's your birthday!
+User Email Status Updated
+Success sending birthday message: Hey, new251 Athiyah, it's your birthday!
+Running Scheduler......
+Users with birthdays today: []
+Running The Schedule And Sending Birthday Messages......
+Tasks: []
