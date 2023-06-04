@@ -25,7 +25,7 @@ import UserRoute from "./routes/UserRoute.js";
 import {
 	scheduleBirthdayMessages,
 	sendBirthdayMessages,
-	retryUnsentMessages,
+	// retryUnsentMessages,
 } from "./utils/NEW1.js";
 
 const app = express();
@@ -76,17 +76,15 @@ console.log("Server Time On UTC 0: ", getServerTimeOnUTC0());
 
 // Start the birthday message scheduling process
 setInterval(scheduleBirthdayMessages, 1000 * 60 * 1);
-// scheduleBirthdayMessages();
 // Start the sender to send queued birthday messages every minute
 const startSender = () => {
 	setInterval(sendBirthdayMessages, 60 * 1000); // Repeat every 1 minute
 };
-
 // Start the sender
 startSender();
 
-// Retry unsent messages every hour
-setInterval(retryUnsentMessages, 60 * 60 * 1000); // Repeat every 1 hour
+// // Retry unsent messages every hour
+// setInterval(retryUnsentMessages, 60 * 60 * 1000); // Repeat every 1 hour
 
 app.listen(PORT, () => {
 	Connect();
