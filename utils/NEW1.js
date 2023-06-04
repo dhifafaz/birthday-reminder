@@ -50,7 +50,7 @@ const sendEmail = async (user, message) => {
 		}
 	} catch (error) {
 		console.error(
-			`Error sending birthday message to ${user.firstName} ${user.lastName}:`,
+			`Error sending birthday message to ${user.firstName} ${user.lastName}:`
 		);
 	}
 };
@@ -61,7 +61,8 @@ const scheduleBirthdayMessages = async () => {
 		const users = await findUsersWithBirthdaysToday();
 		console.log("ini data users di data schedule", users);
 
-		users.forEach((user) => {
+		// users.forEach((user) => {
+		for (const user of users) {
 			const { location, firstName, lastName } = user;
 			const localTime = moment()
 				.tz(location)
@@ -72,29 +73,42 @@ const scheduleBirthdayMessages = async () => {
 				const delay = localTime.diff(moment().utc());
 				console.log("delay", delay);
 
-				setTimeout(() => {
-					const messageId = uuid();
-					const message = `Hey, ${firstName} ${lastName}, it's your birthday!`;
+				// setTimeout(() => {
+				const messageId = uuid();
+				const message = `Hey, ${firstName} ${lastName}, it's your birthday!`;
 
-					const birthdayMessage = {
-						id: messageId,
-						userId: user._id,
-						message,
-						timestamp: Date.now(),
-						retryAttempts: 0,
-					};
-					// prevent adding duplicate messages to redis queue by checking if message already exists using userId
-					redisClient.zadd(
-						"birthdayMessages",
-						delay,
-						JSON.stringify(birthdayMessage)
-					);
-					console.log("Scheduled birthday message:", birthdayMessage);
-				}, delay);
+				const birthdayMessage = {
+					id: messageId,
+					userId: user._id,
+					message,
+					timestamp: Date.now(),
+					retryAttempts: 0,
+				};
+				
+				// redisClient.zadd(
+				// 	"birthdayMessages",
+				// 	delay,
+				// 	JSON.stringify(birthdayMessage)
+				// );
+				const payload = JSON.stringify(birthdayMessage);
+				// prevent adding duplicate messages to redis queue by checking if message already exists using userId
+				// Check if the user ID already exists in the sorted set
+				const existingUserId = await redisClient.zrank("birthdayMessages", user._id);
+				if (existingUserId !== null) {
+				console.log("Duplicate message already scheduled for user:", user._id);
+				continue;
+				}
+
+				redisClient.zadd("birthdayMessages", delay, user._id, payload);
+				console.log("Scheduled birthday message:", birthdayMessage);
+						console.log("Scheduled birthday message:", birthdayMessage);
+						// }, delay);
+						
 			} else {
 				console.log("ga ke run");
 			}
-		});
+		// });
+		}
 	} catch (error) {
 		console.error("Error Scheduling Birthday Messages:", error);
 	}
