@@ -63,51 +63,52 @@ const scheduleBirthdayMessages = async () => {
 
 		// users.forEach((user) => {
 		for (const user of users) {
-			const { location, firstName, lastName } = user;
+			const { location, firstName, lastName, _id: userId } = user;
 			const localTime = moment()
 				.tz(location)
-				.set({ hour: 3, minute: 25, second: 0, millisecond: 0 });
+				.set({ hour: 5, minute: 3, second: 0, millisecond: 0 });
 
 			if (localTime.isSameOrAfter(moment().utc())) {
 				// if (localTime.hour() === 2 && localTime.minute() === 40) {
 				const delay = localTime.diff(moment().utc());
 				console.log("delay", delay);
+				const isScheduled = await redisClient.zrank(
+					"birthdayMessages",
+					user._id
+				);
 
-				// setTimeout(() => {
-				const messageId = uuid();
-				const message = `Hey, ${firstName} ${lastName}, it's your birthday!`;
+				if (isScheduled === null) {
+					// setTimeout(() => {
+					const messageId = uuid();
+					const message = `Hey, ${firstName} ${lastName}, it's your birthday!`;
 
-				const birthdayMessage = {
-					id: messageId,
-					userId: user._id,
-					message,
-					timestamp: Date.now(),
-					retryAttempts: 0,
-				};
-				
-				// redisClient.zadd(
-				// 	"birthdayMessages",
-				// 	delay,
-				// 	JSON.stringify(birthdayMessage)
-				// );
-				const payload = JSON.stringify(birthdayMessage);
-				// prevent adding duplicate messages to redis queue by checking if message already exists using userId
-				// Check if the user ID already exists in the sorted set
-				const existingUserId = await redisClient.zrank("birthdayMessages", user._id);
-				if (existingUserId !== null) {
-				console.log("Duplicate message already scheduled for user:", user._id);
-				continue;
+					const birthdayMessage = {
+						id: messageId,
+						userId,
+						message,
+						timestamp: Date.now(),
+						retryAttempts: 0,
+					};
+
+					// redisClient.zadd(
+					// 	"birthdayMessages",
+					// 	delay,
+					// 	JSON.stringify(birthdayMessage)
+					// );
+					const payload = JSON.stringify(birthdayMessage);
+					// prevent adding duplicate messages to redis queue by checking if message already exists using userId
+					// Check if the user ID already exists in the sorted set
+
+					redisClient.zadd("birthdayMessages", delay, payload);
+					console.log("Scheduled birthday message:", birthdayMessage);
+					// }, delay);
+				} else {
+					console.log(`Birthday Message Already Scheduled For User ${userId}`);
 				}
-
-				redisClient.zadd("birthdayMessages", delay, user._id, payload);
-				console.log("Scheduled birthday message:", birthdayMessage);
-						console.log("Scheduled birthday message:", birthdayMessage);
-						// }, delay);
-						
 			} else {
 				console.log("ga ke run");
 			}
-		// });
+			// });
 		}
 	} catch (error) {
 		console.error("Error Scheduling Birthday Messages:", error);
@@ -143,9 +144,9 @@ const sendBirthdayMessages = async () => {
 
 						try {
 							await sendEmail(user, message);
-							console.log("Sent Birthday Message:", message);
+							console.log("Sent Birthday Message", message);
 						} catch (error) {
-							console.error("Error Sending Birthday Message:", error);
+							console.error("Error Sending Birthday Message:");
 							throw error;
 						}
 					});
@@ -165,7 +166,7 @@ const sendBirthdayMessages = async () => {
 			}
 		}
 	} catch (error) {
-		console.error("Error Sending Birthday Messages:", error);
+		console.error("Error Sending Birthday Messages");
 	}
 };
 
@@ -183,7 +184,10 @@ const retryUnsentMessages = async () => {
 
 			const { userId, message, timestamp, retryAttempts } =
 				JSON.parse(queuedMessage);
-			if (Date.now() - timestamp < 24 * 60 * 60 * 1000 && retryAttempts < 3) {
+			if (
+				Date.now() - timestamp < 24 * 60 * 60 * 1000 &&
+				retryAttempts < MAX_RETRY_ATTEMPTS
+			) {
 				const session = await mongoose.startSession();
 				let user;
 				try {
@@ -192,9 +196,9 @@ const retryUnsentMessages = async () => {
 
 						try {
 							await sendEmail(user, message);
-							console.log("Sent retry birthday message:", message);
+							console.log("Sent Retry Birthday Message:", message);
 						} catch (error) {
-							console.error("Error sending retry birthday message:", error);
+							console.error("Error Sending Retry Birthday Message");
 							throw error;
 						}
 					});
@@ -212,7 +216,7 @@ const retryUnsentMessages = async () => {
 			}
 		}
 	} catch (error) {
-		console.error("Error Retrying Unsent Birthday Messages:", error);
+		console.error("Error Retrying Unsent Birthday Messages");
 	}
 };
 

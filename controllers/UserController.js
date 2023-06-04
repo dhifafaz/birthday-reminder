@@ -124,8 +124,8 @@ export const findUsersWithBirthdaysToday = async () => {
 	try {
 		const users = await UserModel.find();
 		const usersWithBirthdaysToday = users.filter((user) => {
-			const birthday = moment(user.birthday).tz(user.location).format("MM-DD");
-			const today = moment().tz("UTC").format("MM-DD");
+			const birthday = moment(user.birthday).format("MM-DD");
+			const today = moment().utc().format("MM-DD");
 			if (user.sendEmail === false) {
 				return birthday === today;
 			}
