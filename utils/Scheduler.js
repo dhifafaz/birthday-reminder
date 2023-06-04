@@ -20,6 +20,7 @@ const zremAsync = promisify(redisClient.zrem).bind(redisClient);
 const zaddAsync = promisify(redisClient.zadd).bind(redisClient);
 const saddAsync = promisify(redisClient.sadd).bind(redisClient);
 const sismemberAsync = promisify(redisClient.sismember).bind(redisClient);
+const smembersAsync = promisify(redisClient.smembers).bind(redisClient);
 const zscoreAsync = promisify(redisClient.zscore).bind(redisClient);
 
 const MAX_RETRY_ATTEMPTS = 3;
@@ -57,7 +58,10 @@ const scheduleBirthdayMessages = async () => {
 	console.log("Running Scheduler......");
 	try {
 		const users = await findUsersWithBirthdaysToday();
-		console.log("Users with birthdays today:", users);
+		if (users.length === 0) {
+			console.log("No users with birthdays today.");
+			return;
+		}
 
 		for (const user of users) {
 			const { location, firstName, lastName, _id: userId, scheduled } = user;
@@ -112,7 +116,10 @@ const processDelayedTasks = async () => {
 	try {
 		const now = moment().utc().valueOf();
 		const tasks = await zrangebyscoreAsync("birthdayMessages", 0, now);
-		console.log("Tasks:", tasks);
+		if (tasks.length === 0) {
+			console.log("No delayed tasks to process.");
+			return;
+		}
 
 		for (const task of tasks) {
 			const {
@@ -133,7 +140,6 @@ const processDelayedTasks = async () => {
 			const nineAMUserLocalTime = userLocalTime
 				.clone()
 				.set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
-			console.log("nineAMUserLocalTime", nineAMUserLocalTime);
 
 			if (!moment().utc().isSame(nineAMUserLocalTime, "hour")) {
 				console.log(
@@ -172,6 +178,10 @@ const processDelayedTasks = async () => {
 					);
 					await zremAsync("birthdayMessages", task);
 					await saddAsync("failedRetryMessages", userId);
+					await saddAsync(
+						"failedMessages",
+						JSON.stringify({ userId, message })
+					);
 				}
 			}
 		}
@@ -180,8 +190,58 @@ const processDelayedTasks = async () => {
 	}
 };
 
+const recoverFailedMessages = async () => {
+	console.log("Recovering Failed Messages...");
+	try {
+		const failedRetryMessages = await smembersAsync("failedRetryMessages");
+		if (!failedRetryMessages.length) {
+			console.log("No failed retry messages found");
+			return;
+		}
+
+		for (const userId of failedRetryMessages) {
+			const user = await UserModel.findById(userId);
+			if (!user) {
+				console.log(`User not found for ID: ${userId}`);
+				continue;
+			}
+
+			const failedMessages = await smembersAsync("failedMessages");
+			const userFailedMessages = failedMessages.filter((message) => {
+				const parsedMessage = JSON.parse(message);
+				return parsedMessage.userId === userId;
+			});
+
+			for (const failedMessage of userFailedMessages) {
+				try {
+					await sendEmail(user, failedMessage);
+					console.log(
+						"Success recovering and sending failed message:",
+						failedMessage
+					);
+					await zremAsync("failedMessages", failedMessage);
+				} catch (error) {
+					console.error("Error recovering and sending failed message:", error);
+				}
+			}
+
+			await zremAsync("failedRetryMessages", userId);
+		}
+	} catch (error) {
+		console.error("Error recovering failed messages:", error);
+	}
+};
+
 const runScheduler = async () => {
+	let lastExecutedDay = null;
+
 	while (true) {
+		const currentDay = moment().utc().format("YYYY-MM-DD");
+
+		if (currentDay !== lastExecutedDay) {
+			await recoverFailedMessages();
+			lastExecutedDay = currentDay;
+		}
 		await scheduleBirthdayMessages();
 		await processDelayedTasks();
 		await new Promise((resolve) => setTimeout(resolve, 60000));
