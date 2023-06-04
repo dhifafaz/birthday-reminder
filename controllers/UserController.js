@@ -29,6 +29,7 @@ export const createUser = async (req, res) => {
 					birthday: response.birthday,
 					location: response.location,
 					sendEmail: response.sendEmail,
+					scheduled: response.scheduled,
 				},
 			});
 		});
@@ -113,7 +114,19 @@ export const updateSendEmailStatus = async (userId) => {
 		await UserModel.findByIdAndUpdate(userId, {
 			sendEmail: true,
 		}).then((response) => {
-			console.log("User Updated");
+			console.log("User Email Status Updated");
+		});
+	} catch (error) {
+		console.log(error.message);
+	}
+};
+
+export const updateScheduledStatus = async (userId) => {
+	try {
+		await UserModel.findByIdAndUpdate(userId, {
+			scheduled: true,
+		}).then((response) => {
+			console.log("User Scheduled");
 		});
 	} catch (error) {
 		console.log(error.message);

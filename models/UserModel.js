@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
 	location: { type: String, required: true },
 	created_at: { type: Date, required: true, default: Date.now },
 	sendEmail: { type: Boolean, required: true, default: false },
+	scheduled: { type: Boolean, required: true, default: false },
 });
 
 const UserModel = mongoose.model("User", userSchema);

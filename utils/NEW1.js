@@ -7,6 +7,7 @@ import {
 	updateSendEmailStatus,
 	findUsersWithBirthdaysToday,
 	// findUsersWithBirthdaysByID,
+	updateScheduledStatus,
 } from "../controllers/UserController.js";
 import mongoose from "mongoose";
 
@@ -63,11 +64,11 @@ const scheduleBirthdayMessages = async () => {
 
 		// users.forEach((user) => {
 		for (const user of users) {
-			const { location, firstName, lastName, _id: userId, sendEmail } = user;
+			const { location, firstName, lastName, _id: userId, scheduled } = user;
 			const localTime = moment().tz(location);
 			const nineAMLocalTime = localTime
 				.clone()
-				.set({ hour: 8, minute: 35, second: 0, millisecond: 0 });
+				.set({ hour: 9, minute: 6, second: 0, millisecond: 0 });
 
 			if (moment().utc().isSameOrBefore(nineAMLocalTime, "minute")) {
 				// if (localTime.hour() === 2 && localTime.minute() === 40) {
@@ -75,7 +76,7 @@ const scheduleBirthdayMessages = async () => {
 				console.log("delay", delay);
 				const isScheduled = await redisClient.zrank("birthdayMessages", userId);
 
-				if (isScheduled === null && sendEmail === false) {
+				if (isScheduled === null && !scheduled) {
 					// setTimeout(() => {
 					const messageId = uuid();
 					const message = `Hey, ${firstName} ${lastName}, it's your birthday!`;
@@ -96,13 +97,13 @@ const scheduleBirthdayMessages = async () => {
 					const payload = JSON.stringify(birthdayMessage);
 					// prevent adding duplicate messages to redis queue by checking if message already exists using userId
 					// Check if the user ID already exists in the sorted set
-
 					redisClient.zadd("birthdayMessages", delay, payload);
 					console.log("Scheduled birthday message:", birthdayMessage);
+					await updateScheduledStatus(userId);
 					// }, delay);
 				} else {
 					console.log(
-						`Birthday Message Already Scheduled For User ${userId}. And Email Send Status Is ${sendEmail}`
+						`Birthday Message Already Scheduled For User ${userId}. And Scheduled Send Status Is ${scheduled}`
 					);
 				}
 			} else {
@@ -119,14 +120,10 @@ const scheduleBirthdayMessages = async () => {
 const sendBirthdayMessages = async () => {
 	console.log("Sending Birthday Messages......");
 	try {
-		while (await redisClient.zcard("birthdayMessages")) {
-			const [queuedMessage] = await redisClient.zrange(
-				"birthdayMessages",
-				0,
-				0
-			);
+		const queuedMessages = await redisClient.zrange("birthdayMessages", 0, -1);
+
+		for (const queuedMessage of queuedMessages) {
 			const {
-				// id,
 				userId,
 				message,
 				timestamp,
@@ -143,14 +140,13 @@ const sendBirthdayMessages = async () => {
 			const localTime = moment().tz(location);
 			const nineAMLocalTime = localTime
 				.clone()
-				.set({ hour: 8, minute: 35, second: 0, millisecond: 0 });
+				.set({ hour: 9, minute: 6, second: 0, millisecond: 0 });
 
 			if (
 				moment(timestamp).isSame(nineAMLocalTime, "minute") &&
 				moment.utc() - timestamp < 24 * 60 * 60 * 1000 &&
 				retryAttempts < MAX_RETRY_ATTEMPTS
 			) {
-				// Check if the message has already been sent
 				const isMessageSent = await redisClient.sismember(
 					"sentMessages",
 					userId
@@ -167,8 +163,9 @@ const sendBirthdayMessages = async () => {
 						try {
 							await sendEmail(user, message);
 							console.log("Success Sending Birthday Message:", message);
+							await redisClient.sadd("sentMessages", userId);
 						} catch (error) {
-							console.error("Error Sending Birthday Message");
+							console.error("Error Sending Birthday Message:", error);
 							throw error;
 						}
 					});
@@ -176,10 +173,8 @@ const sendBirthdayMessages = async () => {
 					session.endSession();
 				}
 
-				const messageId = JSON.parse(queuedMessage).id;
 				redisClient.zrem("birthdayMessages", queuedMessage);
 				console.log("Removed Sent Birthday Message:", message);
-				redisClient.sadd("sentMessages", messageId);
 			} else {
 				const { id, ...updatedMessage } = JSON.parse(queuedMessage);
 				updatedMessage.retryAttempts = retryAttempts + 1;
