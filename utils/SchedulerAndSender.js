@@ -6,7 +6,6 @@ import { uuid } from "uuidv4";
 import {
 	updateSendEmailStatus,
 	findUsersWithBirthdaysToday,
-	// findUsersWithBirthdaysByID,
 	updateScheduledStatus,
 } from "../controllers/UserController.js";
 import mongoose from "mongoose";
@@ -20,12 +19,6 @@ redisClient.on("connect", () => console.log("Redis Client Connected"));
 redisClient.on("error", (error) =>
 	console.log("Redis Client Connection Error", error)
 );
-
-// if (redisClient.status === "connect") {
-// 	console.log("Connected to Redis");
-// } else {
-// 	console.log("Not connected to Redis");
-// }
 
 const MAX_RETRY_ATTEMPTS = 3;
 
@@ -62,22 +55,19 @@ const scheduleBirthdayMessages = async () => {
 		const users = await findUsersWithBirthdaysToday();
 		console.log("ini data users di data schedule", users);
 
-		// users.forEach((user) => {
 		for (const user of users) {
 			const { location, firstName, lastName, _id: userId, scheduled } = user;
 			const localTime = moment().tz(location);
 			const nineAMLocalTime = localTime
 				.clone()
-				.set({ hour: 9, minute: 6, second: 0, millisecond: 0 });
+				.set({ hour: 9, minute: 23, second: 0, millisecond: 0 });
 
 			if (moment().utc().isSameOrBefore(nineAMLocalTime, "minute")) {
-				// if (localTime.hour() === 2 && localTime.minute() === 40) {
 				const delay = nineAMLocalTime.diff(moment(), "milliseconds");
 				console.log("delay", delay);
 				const isScheduled = await redisClient.zrank("birthdayMessages", userId);
 
 				if (isScheduled === null && !scheduled) {
-					// setTimeout(() => {
 					const messageId = uuid();
 					const message = `Hey, ${firstName} ${lastName}, it's your birthday!`;
 
@@ -89,18 +79,10 @@ const scheduleBirthdayMessages = async () => {
 						retryAttempts: 0,
 					};
 
-					// redisClient.zadd(
-					// 	"birthdayMessages",
-					// 	delay,
-					// 	JSON.stringify(birthdayMessage)
-					// );
 					const payload = JSON.stringify(birthdayMessage);
-					// prevent adding duplicate messages to redis queue by checking if message already exists using userId
-					// Check if the user ID already exists in the sorted set
 					redisClient.zadd("birthdayMessages", delay, payload);
 					console.log("Scheduled birthday message:", birthdayMessage);
 					await updateScheduledStatus(userId);
-					// }, delay);
 				} else {
 					console.log(
 						`Birthday Message Already Scheduled For User ${userId}. And Scheduled Send Status Is ${scheduled}`
@@ -109,7 +91,6 @@ const scheduleBirthdayMessages = async () => {
 			} else {
 				console.log("Skipping scheduling for User", userId);
 			}
-			// });
 		}
 	} catch (error) {
 		console.error("Error Scheduling Birthday Messages:", error);
@@ -140,7 +121,7 @@ const sendBirthdayMessages = async () => {
 			const localTime = moment().tz(location);
 			const nineAMLocalTime = localTime
 				.clone()
-				.set({ hour: 9, minute: 6, second: 0, millisecond: 0 });
+				.set({ hour: 9, minute: 23, second: 0, millisecond: 0 });
 
 			if (
 				moment(timestamp).isSame(nineAMLocalTime, "minute") &&
@@ -199,55 +180,5 @@ const sendBirthdayMessages = async () => {
 		console.error("Error Sending Birthday Messages");
 	}
 };
-
-// // Retry sending unsent birthday messages
-// const retryUnsentMessages = async () => {
-// 	try {
-// 		const unsentMessageIds = await redisClient.smembers("unsentMessages");
-
-// 		for (const messageId of unsentMessageIds) {
-// 			const queuedMessage = await redisClient.lindex(
-// 				"failedMessages",
-// 				messageId
-// 			);
-// 			if (!queuedMessage) continue;
-
-// 			const { userId, message, timestamp, retryAttempts } =
-// 				JSON.parse(queuedMessage);
-// 			if (
-// 				Date.now() - timestamp < 24 * 60 * 60 * 1000 &&
-// 				retryAttempts < MAX_RETRY_ATTEMPTS
-// 			) {
-// 				const session = await mongoose.startSession();
-// 				let user;
-// 				try {
-// 					await session.withTransaction(async () => {
-// 						user = await UserModel.findById(userId).session(session);
-
-// 						try {
-// 							await sendEmail(user, message);
-// 							console.log("Sent Retry Birthday Message:", message);
-// 						} catch (error) {
-// 							console.error("Error Sending Retry Birthday Message");
-// 							throw error;
-// 						}
-// 					});
-// 				} finally {
-// 					session.endSession();
-// 				}
-
-// 				redisClient.lrem("failedMessages", 0, queuedMessage);
-// 				console.log("Removed Unsent Retry Birthday Message:", message);
-// 				redisClient.sadd("sentMessages", messageId);
-// 			} else {
-// 				redisClient.lrem("failedMessages", 0, queuedMessage);
-// 				console.log("Removed Failed Retry Birthday Message:", message);
-// 				redisClient.sadd("failedRetryMessages", messageId);
-// 			}
-// 		}
-// 	} catch (error) {
-// 		console.error("Error Retrying Unsent Birthday Messages");
-// 	}
-// };
 
 export { scheduleBirthdayMessages, sendBirthdayMessages };
