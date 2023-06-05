@@ -69,7 +69,7 @@ const scheduleBirthdayMessages = async () => {
 			const localTime = moment().tz(location);
 			const nineAMLocalTime = localTime
 				.clone()
-				.set({ hour: 2, minute: 22, second: 0, millisecond: 0 });
+				.set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
 
 			if (moment().utc().isSameOrBefore(nineAMLocalTime, "hour")) {
 				const delay = nineAMLocalTime.diff(moment().utc(), "milliseconds");
@@ -137,7 +137,7 @@ const processDelayedTasks = async () => {
 			const userLocalTime = moment(timestamp).tz(location);
 			const nineAMUserLocalTime = userLocalTime
 				.clone()
-				.set({ hour: 2, minute: 22, second: 0, millisecond: 0 });
+				.set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
 
 			if (!moment().utc().isSame(nineAMUserLocalTime, "hour")) {
 				console.log(
