@@ -151,11 +151,11 @@ export const findUsersWithBirthdaysToday = async () => {
 	}
 };
 
-// export const findUsersWithBirthdaysByID = async (userId) => {
-// 	try {
-// 		const user = await UserModel.find(userId);
-// 		return user;
-// 	} catch (error) {
-// 		console.log(error.message);
-// 	}
-// };
+export const findUsersWithBirthdaysByID = async (userId) => {
+	try {
+		const user = await UserModel.findById(userId);
+		return user;
+	} catch (error) {
+		console.log(error.message);
+	}
+};

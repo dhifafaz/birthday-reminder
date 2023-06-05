@@ -18,7 +18,6 @@ function Connect() {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	});
-	return database;
 }
 
 export default Connect;

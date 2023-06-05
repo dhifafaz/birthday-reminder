@@ -6,7 +6,7 @@ dotenv.config();
 import Connect from "./config/Database.js";
 
 import UserRoute from "./routes/UserRoute.js";
-import runScheduler from "./utils/Scheduler.js";
+import { runScheduler } from "./utils/Scheduler.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;

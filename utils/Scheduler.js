@@ -8,6 +8,7 @@ import {
 	updateSendEmailStatus,
 	findUsersWithBirthdaysToday,
 	updateScheduledStatus,
+	findUsersWithBirthdaysByID,
 } from "../controllers/UserController.js";
 import UserModel from "../models/UserModel.js";
 
@@ -68,7 +69,7 @@ const scheduleBirthdayMessages = async () => {
 			const localTime = moment().tz(location);
 			const nineAMLocalTime = localTime
 				.clone()
-				.set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
+				.set({ hour: 2, minute: 22, second: 0, millisecond: 0 });
 
 			if (moment().utc().isSameOrBefore(nineAMLocalTime, "hour")) {
 				const delay = nineAMLocalTime.diff(moment().utc(), "milliseconds");
@@ -126,7 +127,7 @@ const processDelayedTasks = async () => {
 				retryAttempts = 0,
 			} = JSON.parse(task);
 
-			const user = await UserModel.findById(userId);
+			const user = await findUsersWithBirthdaysByID(userId);
 			if (!user) {
 				console.log(`User Not Found For ID: ${userId}`);
 				continue;
@@ -136,7 +137,7 @@ const processDelayedTasks = async () => {
 			const userLocalTime = moment(timestamp).tz(location);
 			const nineAMUserLocalTime = userLocalTime
 				.clone()
-				.set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
+				.set({ hour: 2, minute: 22, second: 0, millisecond: 0 });
 
 			if (!moment().utc().isSame(nineAMUserLocalTime, "hour")) {
 				console.log(
@@ -197,7 +198,7 @@ const recoverFailedMessages = async () => {
 		}
 
 		for (const userId of failedRetryMessages) {
-			const user = await UserModel.findById(userId);
+			const user = await findUsersWithBirthdaysByID(userId);
 			if (!user) {
 				console.log(`User Not Found For ID: ${userId}`);
 				continue;
@@ -245,4 +246,10 @@ const runScheduler = async () => {
 	}
 };
 
-export default runScheduler;
+export {
+	sendEmail,
+	scheduleBirthdayMessages,
+	processDelayedTasks,
+	recoverFailedMessages,
+	runScheduler,
+};
