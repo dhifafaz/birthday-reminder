@@ -7,9 +7,7 @@ import {
 	updateSendEmailStatus,
 	findUsersWithBirthdaysToday,
 	updateScheduledStatus,
-	findUsersWithBirthdaysByID,
 } from "../controllers/UserController.js";
-import UserModel from "../models/UserModel.js";
 
 const redisClient = client;
 // Promisify Redis commands
