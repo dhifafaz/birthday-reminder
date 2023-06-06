@@ -151,6 +151,23 @@ export const findUsersWithBirthdaysToday = async () => {
 	}
 };
 
+// export const findUsersWithBirthdaysToday = async () => {
+// 	try {
+// 		const today = moment().utc().startOf("day").toDate();
+
+// 		const usersWithBirthdaysToday = await UserModel.find({
+// 			sendEmail: false,
+// 			scheduled: false,
+// 			birthday: { $gte: today, $lt: moment(today).endOf("day").toDate() },
+// 		});
+
+// 		return usersWithBirthdaysToday;
+// 	} catch (error) {
+// 		console.error(error);
+// 		throw error;
+// 	}
+// };
+
 export const findUsersWithBirthdaysByID = async (userId) => {
 	try {
 		const user = await UserModel.findById(userId);

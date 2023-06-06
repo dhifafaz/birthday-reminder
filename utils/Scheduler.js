@@ -1,6 +1,5 @@
 import moment from "moment-timezone";
 import axios from "axios";
-import { uuid } from "uuidv4";
 import { promisify } from "util";
 
 import client from "../config/Redis.js";
@@ -26,31 +25,24 @@ const zscoreAsync = promisify(redisClient.zscore).bind(redisClient);
 
 const MAX_RETRY_ATTEMPTS = 3;
 
-const sendEmail = async (user, message) => {
+const sendEmail = async (email, message, userId) => {
 	try {
 		const response = await axios.post(
 			"https://email-service.digitalenvision.com.au/send-email",
 			{
-				email: user.email,
+				email: email,
 				message: message,
 			}
 		);
 
 		if (response.status === 200) {
-			console.log(
-				`Sent Birthday Message To ${user.firstName} ${user.lastName}: ${message}`
-			);
-			await updateSendEmailStatus(user._id);
+			console.log(`Sent Birthday Message`);
+			await updateSendEmailStatus(userId);
 		} else {
-			console.error(
-				`Failed To Send Birthday Message To ${user.firstName} ${user.lastName}`
-			);
+			console.error(`Failed To Send Birthday Message`);
 		}
 	} catch (error) {
-		console.error(
-			`Error Sending Birthday Message To ${user.firstName} ${user.lastName}:`,
-			error.response.status
-		);
+		console.error(`Error Sending Birthday Message`, error.response.status);
 		throw error;
 	}
 };
@@ -59,49 +51,59 @@ const scheduleBirthdayMessages = async () => {
 	console.log("Running Scheduler......");
 	try {
 		const users = await findUsersWithBirthdaysToday();
+		console.log("Users With Birthdays Today:", users);
 		if (users.length === 0) {
 			console.log("No Users With Birthdays Today.");
 			return;
 		}
 
 		for (const user of users) {
-			const { location, firstName, lastName, _id: userId, scheduled } = user;
-			const localTime = moment().tz(location);
-			const nineAMLocalTime = localTime
-				.clone()
-				.set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
+			const {
+				location,
+				firstName,
+				lastName,
+				_id: userId,
+				scheduled,
+				email,
+			} = user;
+			const userLocalTime = moment().tz(location);
 
-			if (moment().utc().isSameOrBefore(nineAMLocalTime, "hour")) {
-				const delay = nineAMLocalTime.diff(moment().utc(), "milliseconds");
-				const isScheduled = await zscoreAsync("birthdayMessages", userId);
+			if (userLocalTime.hour() >= 9) {
+				console.log(
+					`Skipping scheduling for user ${userId}. It is already 9 AM or later in user's local timezone.`
+				);
+				continue;
+			}
 
-				if (isScheduled === null && !scheduled) {
-					const updateStatusResult = await updateScheduledStatus(userId);
-					console.log(updateStatusResult);
-					if (updateStatusResult) {
-						const messageId = uuid();
-						const message = `Hey, ${firstName} ${lastName}, it's your birthday!`;
+			const isScheduled = await zscoreAsync("birthdayMessages", userId);
 
-						const birthdayMessage = {
-							id: messageId,
-							userId,
-							message,
-							timestamp: nineAMLocalTime.valueOf(),
-							retryAttempts: 0,
-						};
+			if (isScheduled === null && !scheduled) {
+				const delay = moment
+					.duration({ hours: 9 - userLocalTime.hour() })
+					.asMilliseconds();
+				console.log("Delay:", delay);
+				const updateStatusResult = await updateScheduledStatus(userId);
+				console.log(updateStatusResult);
+				if (updateStatusResult) {
+					const message = `Hey, ${firstName} ${lastName}, it's your birthday!`;
 
-						const payload = JSON.stringify(birthdayMessage);
-						await zaddAsync("birthdayMessages", delay, payload);
-					} else {
-						console.log(`Failed To Update Scheduled Status For User ${userId}`);
-					}
+					const birthdayMessage = {
+						userId,
+						message,
+						location,
+						email,
+						retryAttempts: 0,
+					};
+
+					const payload = JSON.stringify(birthdayMessage);
+					await zaddAsync("birthdayMessages", delay, payload);
 				} else {
-					console.log(
-						`Birthday Message Already Scheduled For ser ${userId}. And Scheduled Status Is ${scheduled}`
-					);
+					console.log(`Failed To Update Scheduled Status For User ${userId}`);
 				}
 			} else {
-				console.log(`Skipping Scheduling For User ${userId}.`);
+				console.log(
+					`Birthday Message Already Scheduled For ser ${userId}. And Scheduled Status Is ${scheduled}`
+				);
 			}
 		}
 	} catch (error) {
@@ -114,6 +116,7 @@ const processDelayedTasks = async () => {
 	try {
 		const now = moment().utc().valueOf();
 		const tasks = await zrangebyscoreAsync("birthdayMessages", 0, now);
+		console.log("Delayed Tasks:", tasks);
 		if (tasks.length === 0) {
 			console.log("No Delayed Tasks To Process.");
 			return;
@@ -123,25 +126,20 @@ const processDelayedTasks = async () => {
 			const {
 				userId,
 				message,
-				timestamp,
+				location,
+				email,
 				retryAttempts = 0,
 			} = JSON.parse(task);
 
-			const user = await findUsersWithBirthdaysByID(userId);
-			if (!user) {
-				console.log(`User Not Found For ID: ${userId}`);
-				continue;
-			}
+			const userLocalTime = moment().tz(location);
 
-			const { location } = user;
-			const userLocalTime = moment(timestamp).tz(location);
-			const nineAMUserLocalTime = userLocalTime
-				.clone()
-				.set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
-
-			if (!moment().utc().isSame(nineAMUserLocalTime, "hour")) {
+			if (
+				userLocalTime.hour() !== 9 ||
+				userLocalTime.minute() !== 0 ||
+				userLocalTime.second() !== 0
+			) {
 				console.log(
-					`Skipping Delayed Birthday Message For User ${userId}. Not Yet 9 AM In User's Local Timezone.`
+					`Skipping delayed birthday message for user ${userId}. Not yet 9 AM in user's local timezone.`
 				);
 				continue;
 			}
@@ -155,7 +153,7 @@ const processDelayedTasks = async () => {
 			}
 
 			try {
-				await sendEmail(user, message);
+				await sendEmail(email, message, userId);
 				console.log("Success Sending Birthday Message:", message);
 				await zremAsync("birthdayMessages", task);
 				await saddAsync("sentMessages", userId);
@@ -174,12 +172,13 @@ const processDelayedTasks = async () => {
 					console.log(
 						`Maximum Retry Attempts Reached For Birthday Message: ${message}`
 					);
+					const failedMessage = {
+						userId,
+						message,
+						email,
+					};
 					await zremAsync("birthdayMessages", task);
-					await saddAsync("failedRetryMessages", userId);
-					await saddAsync(
-						"failedMessages",
-						JSON.stringify({ userId, message })
-					);
+					await saddAsync("failedMessages", JSON.stringify(failedMessage));
 				}
 			}
 		}
@@ -191,39 +190,23 @@ const processDelayedTasks = async () => {
 const recoverFailedMessages = async () => {
 	console.log("Recovering Failed Messages...");
 	try {
-		const failedRetryMessages = await smembersAsync("failedRetryMessages");
-		if (!failedRetryMessages.length) {
+		const userFailedMessages = await smembersAsync("failedMessages");
+		console.log("Failed Messages:", userFailedMessages);
+		if (!userFailedMessages.length) {
 			console.log("No Failed Retry Messages Found");
 			return;
 		}
 
-		for (const userId of failedRetryMessages) {
-			const user = await findUsersWithBirthdaysByID(userId);
-			if (!user) {
-				console.log(`User Not Found For ID: ${userId}`);
-				continue;
+		for (const failedMessage of userFailedMessages) {
+			const { userId, message, email } = JSON.parse(failedMessage);
+			try {
+				await sendEmail(email, message, userId);
+				console.log("Success Recovering And Sending Failed Message:", message);
+				await zremAsync("failedMessages", failedMessage);
+				await saddAsync("sentMessages", userId);
+			} catch (error) {
+				console.error("Error Recovering And Sending Failed Message:", error);
 			}
-
-			const failedMessages = await smembersAsync("failedMessages");
-			const userFailedMessages = failedMessages.filter((message) => {
-				const parsedMessage = JSON.parse(message);
-				return parsedMessage.userId === userId;
-			});
-
-			for (const failedMessage of userFailedMessages) {
-				try {
-					await sendEmail(user, failedMessage);
-					console.log(
-						"Success Recovering And Sending Failed Message:",
-						failedMessage
-					);
-					await zremAsync("failedMessages", failedMessage);
-				} catch (error) {
-					console.error("Error Recovering And Sending Failed Message:", error);
-				}
-			}
-
-			await zremAsync("failedRetryMessages", userId);
 		}
 	} catch (error) {
 		console.error("Error Recovering Failed Messages:", error);
